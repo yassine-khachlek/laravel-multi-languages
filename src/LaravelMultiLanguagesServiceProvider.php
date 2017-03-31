@@ -20,11 +20,19 @@ class LaravelMultiLanguagesServiceProvider extends ServiceProvider
         
         $kernel->pushMiddleware('Yk\LaravelMultiLanguages\App\Http\Middleware\MiddlewareYkLaravelMultiLanguages');
 
-        foreach (Config::get('yk.laravel-multi-languages.languages') as $key => $language) {
+        $languages = array_map(function ($language) {
+            return $language['iso_code_639_1'];
+        }, array_filter(Config::get('yk.laravel-multi-languages.languages'), function ($language) {
+            return $language['enabled'];
+        }));
+
+        foreach ($languages as $key => $language) {
             Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => $language, 'as' => $language.'.'], function () {
                 require base_path('routes/web.php');
             });
         }
+
+        $this->loadViewsFrom(__DIR__.'/resources/views', 'Yk\LaravelMultiLanguages');
 
         $this->publishes([
             __DIR__.'/config/languages.php' => config_path('vendor/yk/laravel-multi-languages/languages.php'),

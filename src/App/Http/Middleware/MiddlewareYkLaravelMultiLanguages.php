@@ -17,7 +17,13 @@ class MiddlewareYkLaravelMultiLanguages
      */
     public function handle($request, Closure $next)
     {
-        if (in_array($request->segment(1), Config::get('yk.laravel-multi-languages.languages'))) {
+        $languages = array_map(function ($language) {
+            return $language['iso_code_639_1'];
+        }, array_filter(Config::get('yk.laravel-multi-languages.languages'), function ($language) {
+            return $language['enabled'];
+        }));
+
+        if (in_array($request->segment(1), $languages)) {
             App::setLocale($request->segment(1));
         }
 
