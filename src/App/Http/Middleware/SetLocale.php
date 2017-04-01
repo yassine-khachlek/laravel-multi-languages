@@ -6,7 +6,7 @@ use Closure;
 use App;
 use Config;
 
-class MiddlewareYkLaravelMultiLanguages
+class SetLocale
 {
     /**
      * Handle an incoming request.
@@ -17,11 +17,7 @@ class MiddlewareYkLaravelMultiLanguages
      */
     public function handle($request, Closure $next)
     {
-        $languages = array_map(function ($language) {
-            return $language['iso_code_639_1'];
-        }, array_filter(Config::get('yk.laravel-multi-languages.languages'), function ($language) {
-            return $language['enabled'];
-        }));
+        $languages = array_keys(Config::get('yk.laravel-multi-languages.languages'));
 
         if (in_array($request->segment(1), $languages)) {
             App::setLocale($request->segment(1));

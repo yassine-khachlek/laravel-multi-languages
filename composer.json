@@ -1,5 +1,14 @@
 {
     "name": "yk/laravel-multi-languages",
+    "description": "Laravel multi languages website.",
+    "homepage": "https://github.com/yassine-khachlek/laravel-multi-languages",
+    "keywords": [
+        "laravel",
+        "multi-languages",
+        "language",
+        "i18n",
+        "localization"
+    ],
     "license": "GPLv2",
     "authors": [
         {
